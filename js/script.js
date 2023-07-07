@@ -408,6 +408,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const prevBtn = document.querySelector('.offer__slider-prev'),
         nextBtn = document.querySelector('.offer__slider-next'),
+        slider = document.querySelector('.offer__slider'),
         slides = document.querySelectorAll('.offer__slide'),
         total = document.querySelector('#total'),
         current = document.querySelector('#current'),
@@ -435,6 +436,59 @@ window.addEventListener('DOMContentLoaded', () => {
         slide.style.width = width; //შეიძლება ეს სლაიდები სხვადასხვა ზომის ყოფილიყო და ამ კოდით ყველას ერთი და იგივე ფართობს ვანიჭებ.
     })
 
+    slider.style.position = 'relative';     //slider-ში არსებული ელემენტები ნორმალურად წარმოისახება.
+
+    const indicators = document.createElement('ol'),    //ol - ordered list
+        dots = [];
+    indicators.classList.add('carousel-indicators');
+    indicators.style.cssText = `
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 15;
+        display: flex;
+        justify-content: center;
+        margin-right: 15%;
+        margin-left: 15%;
+        list-style: none;
+    `;
+
+    slider.append(indicators);      //slider-ს დავამატე ეს indicators
+
+    //ახლა ქვემოთ უნდა შევქმნა სალიდების რაოდენობაზე დაყრდნობით წერტილები
+
+    for (let i = 0; i < slides.length; i++) {
+        const dot = document.createElement('li');
+        dot.setAttribute('data-slide-to', i + 1)
+        dot.style.cssText = `
+        box-sizing: content-box;
+        flex: 0 1 auto;
+        width: 30px;
+        height: 6px;
+        margin-right: 3px;
+        margin-left: 3px;
+        cursor: pointer;
+        background-color: #fff;
+        background-clip: padding-box;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        opacity: .5;
+        transition: opacity .6s ease;
+        `
+
+        if (i == 0) {
+            dot.style.opacity = 1;
+        }
+
+        indicators.append(dot);
+
+        dots.push(dot);     //dots მასივში, რომელიც ზემოთაა შექმნილი, ვამატებ ამ წერილს
+
+
+
+    }
+
     nextBtn.addEventListener('click', () => {
         if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) { //+width-ში რაც მიწერია, ჯერ ვმუშაობ ტექსტთან, შემდეგ ვაშორებ ბოლო 2 სიმბოლოს ანუ 'px' და ბოლოს დარჩენილი სტრინგი გადამყავს რიცხვში
             offset = 0; //ეს იმას ნიშნავს, რომ გადავსქროლე ბოლომდე სლაიდი უნდა დავბრუნდეს დასაწყისში
@@ -452,6 +506,11 @@ window.addEventListener('DOMContentLoaded', () => {
         } else {
             current.textContent = slideIndex;
         }
+
+        dots.forEach(dot => {
+            dot.style.opacity = '.5'
+        })
+        dots[slideIndex - 1].style.opacity = 1;
     })
 
     prevBtn.addEventListener('click', () => {
@@ -474,10 +533,35 @@ window.addEventListener('DOMContentLoaded', () => {
             current.textContent = slideIndex;
         }
 
+        dots.forEach(dot => {
+            dot.style.opacity = '.5'
+        })
+        dots[slideIndex - 1].style.opacity = 1;
+
+    });
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            const slideTo = e.target.getAttribute('data-slide-to');
+
+            slideIndex = slideTo;
+            offset = +width.slice(0, width.length - 2) * (slideTo - 1)
+
+            slidesField.style.transform = `translateX(-${offset}px) `
+
+            if (slides.length < 10) {
+                current.textContent = `0${slideIndex}`;
+            } else {
+                current.textContent = slideIndex;
+            }
+
+            dots.forEach(dot => dot.style.opacity = ".5");
+            dots[slideIndex - 1].style.opacity = 1;
+
+        })
     })
 
-
-    //ქვემოთ წერია სლაიდის პირველი და უფრო მარტივი ვერსია 
+    //ქვემოთ წერია სლაიდის პირველი და უფრო მარტივი ვერსია !
 
     // showSlides(slideIndex);  // ვეუმბენი, რომ გამოჩხნდეს მხოლოდ პირველი სლაიდი, რადგან slideIndex არის 1-ის ტოლი
 
