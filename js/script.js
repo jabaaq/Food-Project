@@ -416,6 +416,15 @@ window.addEventListener('DOMContentLoaded', () => {
         width = window.getComputedStyle(slidesWrapper).width;  //ამ ბრძანებით ვიგებ, რომელი სტილები იყო გამოყენებული ელემნტზე, შედეგად მიბრუნდება ობიექტი, სადაც ეს სტილები წერია და ბოლოს რომ ვწერ .width ამის  მეშვეობით, მოპოვებული სტილებიდან გამოვყოფ მხოლოდ width-ს (სიგანეს)
 
     let slideIndex = 1;
+    let offset = 0;
+
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;        //თუ სლაიდების რიცხვი ნაკლები ინქება 10-ზე მაშინ მას ვამატებ წინ 0-ს
+        current.textContent = `0${slideIndex}`
+    } else {
+        total.textContent = slides.length;
+        current.textContent = slideIndex;
+    }
 
     slidesField.style.width = 100 * slides.length + '%';  //სლაიდების რაოდენას ვამრავლებ 100%-ზე, რადგან იგი საიტზე დიდ ადგილს იკავებს და შესაბამისად ვჭიმავ მთელს სიგანეზე და ბოლოს ეს  '%' იმიტომ ვწერ, რომ css სტილები სხვანაირად ვერ გაიგებენ
     slidesField.style.display = 'flex';
@@ -423,13 +432,54 @@ window.addEventListener('DOMContentLoaded', () => {
 
     slidesWrapper.style.overflow = 'hidden';
     slides.forEach(slide => {
-        slide.style.width = width; //შეიძლება ეს სლაიდები სხვადასხვა ზომის ყოფილიყო და ამ კოდით ყველას ერთი და იგივე ზომას ვანიჭებ.
+        slide.style.width = width; //შეიძლება ეს სლაიდები სხვადასხვა ზომის ყოფილიყო და ამ კოდით ყველას ერთი და იგივე ფართობს ვანიჭებ.
+    })
+
+    nextBtn.addEventListener('click', () => {
+        if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) { //+width-ში რაც მიწერია, ჯერ ვმუშაობ ტექსტთან, შემდეგ ვაშორებ ბოლო 2 სიმბოლოს ანუ 'px' და ბოლოს დარჩენილი სტრინგი გადამყავს რიცხვში
+            offset = 0; //ეს იმას ნიშნავს, რომ გადავსქროლე ბოლომდე სლაიდი უნდა დავბრუნდეს დასაწყისში
+        } else {
+            offset += +width.slice(0, width.length - 2)
+        }
+        slidesField.style.transform = `translateX(-${offset}px) `//ღილაკზე დაჭერირას ელემენტი გადაინაცვლებს მარცხნივ და რადგანაც მარცხნივ გადადდის ვწერ უარყოფით რიცხვს  
+        if (slideIndex == slides.length) {      //როდესაც სლაიდის რიცხვი გავა ბოლოში იგი გახდება ისევ ერთი
+            slideIndex = 1;
+        } else {
+            slideIndex++;   //სლაიდის რიცხვი გაიზრდება ერთით
+        }
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`
+        } else {
+            current.textContent = slideIndex;
+        }
+    })
+
+    prevBtn.addEventListener('click', () => {
+        if (offset == 0) {
+            offset = +width.slice(0, width.length - 2) * (slides.length - 1)
+        } else {
+            offset -= +width.slice(0, width.length - 2)
+        }
+        slidesField.style.transform = `translateX(-${offset}px) `
+
+        if (slideIndex == 1) {      //როდესაც ვიმყოფები პირველ სლაიდზე და დავაჭერ წინა ღილაკს სლაიდის რიცხვი გადავა ბოლო საიტზე
+            slideIndex = slides.length;
+        } else {
+            slideIndex--;       //უკანა ღილაკზე დაკლიკებისას სლაიდის რიცხვს ვამცირებ ერთით
+        }
+
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`
+        } else {
+            current.textContent = slideIndex;
+        }
+
     })
 
 
-    //ქვემოთ წერია სლაიდის პირველი და უფრო მარტივი ვერსია
+    //ქვემოთ წერია სლაიდის პირველი და უფრო მარტივი ვერსია 
 
-    // showSlides(slideIndex);  // ვეუმბენი, რომ გამოჩხნდეს მხოლოდ პირველი სლაიდი
+    // showSlides(slideIndex);  // ვეუმბენი, რომ გამოჩხნდეს მხოლოდ პირველი სლაიდი, რადგან slideIndex არის 1-ის ტოლი
 
     // if (slides.length < 10) {
     //     total.textContent = `0${slides.length}`;        //თუ სლაიდების რიცხვი ნაკლები ინქება 10-ზე მაშინ მას ვამატებ წინ 0-ს
