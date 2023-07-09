@@ -145,7 +145,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     modal.addEventListener('click', (e) => {        // აქ ვამატებ ბრძანებას, რომ მოდალური ფანჯარა დავხურო უკანა ფონზე დაკლიკებისას
-        if (e.target === modal || e.target.getAtrribute('data-close') == '') {       //e.target-ით მივიღებ მონაცემებს, თუ სად ვაკლიკებ და თუ იგი დაემთხვა modal-ს, მაშინ მას ვხურავ
+        if (e.target === modal || e.target.getAttribute('data-close') == '') {       //e.target-ით მივიღებ მონაცემებს, თუ სად ვაკლიკებ და თუ იგი დაემთხვა modal-ს, მაშინ მას ვხურავ
             closeModal();       // აქ კი ვამატებ ფუნქციას closeModal()-ს უკვე ფრჩხილებით
         }
     });
@@ -564,7 +564,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
-    //ქვემოთ წერია სლაიდის პირველი და უფრო მარტივი ვერსია !
+    //ქვემოთ წერია სლაიდის პირველი და უფრო მარტივი ვერსია ! (Open it)
 
     // showSlides(slideIndex);  // ვეუმბენი, რომ გამოჩხნდეს მხოლოდ პირველი სლაიდი, რადგან slideIndex არის 1-ის ტოლი
 
@@ -606,6 +606,79 @@ window.addEventListener('DOMContentLoaded', () => {
     // nextBtn.addEventListener('click', () => {
     //     plusSlides(1);         //next ღილაკს როცა ეჭირება იზრდება 1-ით
     // })
+
+    //Calculator
+
+
+    //Calculator
+
+    const result = document.querySelector('.calculating__result span')      //კლასსთან ერთად მოვიპოვებ span-ს
+    let sex = 'female',     //default მნიშვნელობას ვანიჭებ
+        height, weight, age,
+        ratio = '1.375';    // default მნიშვნელობას ვანიჭებ
+
+    function clalcTotal() {
+        if (!sex || !height || !weight || !age || !ratio) {  //თუ რომელიმე არ იქნება მითითებული
+            result.textContent = '____';
+            return; //return ამას ვწერ იმისთვის, რომ მალევე შეწყდეს ფუნქცია და მომდევნო ფუქნციები არ განხორციელდეს, იმ შემთხვევაში თუ არ მექნება მითითებული რაიმე, ზემოთ ჩამოთვლითაგან
+        }
+
+        if (sex === 'female') {
+            result.textContent = Math.round((447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * ratio);
+        } else {
+            result.textContent = Math.round(88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age) * ratio);
+        }
+    }
+    clalcTotal();
+
+    function getStaticInformation(parentSelector, activeClass) {
+        const elements = document.querySelectorAll(`${parentSelector} div`); //რადგან მინდა div მოპოვება თითოეული მშობლის, ამიტომაც ვწერ ასე  
+
+        elements.forEach(elem => {      //თითოეულ ელემენტს ვანიჭებ eventlistener-ს
+            elem.addEventListener('click', (e) => {
+                if (e.target.getAttribute('data-ratio')) {  //თუ ასეთი ატრიბუტი data-ratio გააჩნია ელემენტს, მაშინ.... 
+                    ratio = +e.target.getAttribute('data-ratio'); //ეს იმას ნიშნავს, რომ თუ მომხმმარებელი დააკლიკებს ვთქვათ Умеренная активность-ს ჩვენ ვდგებით და ვიღებთ იმ მნიშვნელობას, რაც უყენია data ატრიბუტი
+                } else {
+                    sex = e.target.getAttribute('id');   //თუ ელემენტს არ გააჩნია data ატრიბუტი მოვიპოვებ მის აიდის, ქალის თუ კაცი
+                }
+
+                elements.forEach(elem => {
+                    elem.classList.remove(activeClass);
+                });
+
+                e.target.classList.add(activeClass)
+
+                clalcTotal();
+            })
+        })
+    }
+
+    getStaticInformation('#gender', 'calculating__choose-item_active');
+    getStaticInformation('.calculating__choose_big', 'calculating__choose-item_active');
+
+    function getDynamicInformation(selector) {
+        const input = document.querySelector(selector);
+
+        input.addEventListener('input', () => {
+            switch (input.getAttribute('id')) {     //ის ორიენტირდება აიდიზე და ამ ჩაწერს ამ მონაცემებს განსაზღვრულ ცვლადებში: height, case, weight
+                case 'height':
+                    height = +input.value //თუ მართლა არის სიმაღლის ინპუტი, მაშინ ვიღებ ამ ცვლადს და ვწერ მასში იმ მნიშნველობას, რასაც წერს მომხმარებელი
+                    break;
+                case 'weight':
+                    weight = +input.value;
+                    break;
+                case 'age':
+                    age = +input.value;
+                    break;
+            }
+            clalcTotal();       //მოცემულ ფუნქციას ვიძახებ არაერთხელ, რადგან მინდა, რომ შედეგი ყოველთვის ახლდებოდეს, არ აქვს მომხარებელს შეყავს ინფორმაცია, თი პირიქით, შლის. ბოლოში Ваша суточная норма калорий:-ში ყოველთვის უნდა ახლდეობდეს ინფრომაცია
+        })
+
+    }
+
+    getDynamicInformation('#height');
+    getDynamicInformation('#weight');
+    getDynamicInformation('#age');
 
 });
 
