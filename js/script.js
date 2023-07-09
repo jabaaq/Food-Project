@@ -484,16 +484,17 @@ window.addEventListener('DOMContentLoaded', () => {
         indicators.append(dot);
 
         dots.push(dot);     //dots მასივში, რომელიც ზემოთაა შექმნილი, ვამატებ ამ წერილს
+    }
 
-
-
+    function deleteNotDigits(str) {
+        return +str.replace(/[^\d.]/g, '')
     }
 
     nextBtn.addEventListener('click', () => {
-        if (offset == +width.replace(/[^\d.]/g, '') * (slides.length - 1)) {  //აქ უკვე ვიყნებ Regular Expressions(რეგულარული გამონათქვამებს) - /\D/g,
+        if (offset == deleteNotDigits(width) * (slides.length - 1)) {  //აქ უკვე ვიყნებ Regular Expressions(რეგულარული გამონათქვამებს) - /\D/g,
             offset = 0; //ეს იმას ნიშნავს, რომ გადავსქროლე ბოლომდე სლაიდი უნდა დავბრუნდეს დასაწყისში
         } else {
-            offset += +width.replace(/[^\d.]/g, '')
+            offset += deleteNotDigits(width)
         }
         slidesField.style.transform = `translateX(-${offset}px) `//ღილაკზე დაჭერირას ელემენტი გადაინაცვლებს მარცხნივ და რადგანაც მარცხნივ გადადდის ვწერ უარყოფით რიცხვს  
         if (slideIndex == slides.length) {      //როდესაც სლაიდის რიცხვი გავა ბოლოში იგი გახდება ისევ ერთი
@@ -515,9 +516,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     prevBtn.addEventListener('click', () => {
         if (offset == 0) {
-            offset = +width.replace(/[^\d.]/g, '') * (slides.length - 1)
+            offset = deleteNotDigits(width) * (slides.length - 1)
         } else {
-            offset -= +width.replace(/[^\d.]/g, '')
+            offset -= deleteNotDigits(width)
         }
         slidesField.style.transform = `translateX(-${offset}px) `
 
@@ -545,7 +546,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const slideTo = e.target.getAttribute('data-slide-to');
 
             slideIndex = slideTo;
-            offset = +width.replace(/[^\d.]/g, '') * (slideTo - 1)
+            offset = deleteNotDigits(width) * (slideTo - 1)
 
             slidesField.style.transform = `translateX(-${offset}px) `
 
@@ -560,6 +561,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
         })
     })
+
+
 
     //ქვემოთ წერია სლაიდის პირველი და უფრო მარტივი ვერსია !
 
