@@ -490,10 +490,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     nextBtn.addEventListener('click', () => {
-        if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) { //+width-ში რაც მიწერია, ჯერ ვმუშაობ ტექსტთან, შემდეგ ვაშორებ ბოლო 2 სიმბოლოს ანუ 'px' და ბოლოს დარჩენილი სტრინგი გადამყავს რიცხვში
+        if (offset == +width.replace(/[^\d.]/g, '') * (slides.length - 1)) {  //აქ უკვე ვიყნებ Regular Expressions(რეგულარული გამონათქვამებს) - /\D/g,
             offset = 0; //ეს იმას ნიშნავს, რომ გადავსქროლე ბოლომდე სლაიდი უნდა დავბრუნდეს დასაწყისში
         } else {
-            offset += +width.slice(0, width.length - 2)
+            offset += +width.replace(/[^\d.]/g, '')
         }
         slidesField.style.transform = `translateX(-${offset}px) `//ღილაკზე დაჭერირას ელემენტი გადაინაცვლებს მარცხნივ და რადგანაც მარცხნივ გადადდის ვწერ უარყოფით რიცხვს  
         if (slideIndex == slides.length) {      //როდესაც სლაიდის რიცხვი გავა ბოლოში იგი გახდება ისევ ერთი
@@ -515,9 +515,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     prevBtn.addEventListener('click', () => {
         if (offset == 0) {
-            offset = +width.slice(0, width.length - 2) * (slides.length - 1)
+            offset = +width.replace(/[^\d.]/g, '') * (slides.length - 1)
         } else {
-            offset -= +width.slice(0, width.length - 2)
+            offset -= +width.replace(/[^\d.]/g, '')
         }
         slidesField.style.transform = `translateX(-${offset}px) `
 
@@ -545,7 +545,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const slideTo = e.target.getAttribute('data-slide-to');
 
             slideIndex = slideTo;
-            offset = +width.slice(0, width.length - 2) * (slideTo - 1)
+            offset = +width.replace(/[^\d.]/g, '') * (slideTo - 1)
 
             slidesField.style.transform = `translateX(-${offset}px) `
 
