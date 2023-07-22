@@ -9,27 +9,26 @@ function forms() {
 
     };
 
-    forms.forEach(item => {         // forEach-ის მეშვეობით თითოეულ form-ს რომელიც არის HTML დოკუმენტში, ვუმატებ postData-ს.
+    forms.forEach(item => {
         bindPostData(item);
     });
 
-    //აქ ქვემოთ data მონაცემები, რომელთა დაპოსტვაც მოხდება ამ ფუნქციაში
-    const postData = async (url, data) => {        //რა ხდება ახლა ამ postData ფუნქციაში, ალაგენს(აყენებს) ჩვენს მოთხოვნავს. შემდეგ ხდება ამ მოთხოვნის 
-        const res = await fetch(url, {          // და-fetch-ვა, ანუ ეს მოთხოვნა იგზავნება სერვერზე, შემდეგ ვიღებ რაღაც პასუხს სერვერიდან (თუნდაც ის, რომ
-            method: "POST",                 // დაიპოსტა წარმატებიტ) და ბოლოს ხდება ამ პასუხის ტრანსფორმირება json-ში
+
+    const postData = async (url, data) => {
+        const res = await fetch(url, {
+            method: "POST",
             headers: {
-                'Content-type': 'application/json'          //ამას ვწერ, რადგან მე-300 ხაზის მიხედვით JSON ფორმატთან გვაქვს საქმე
+                'Content-type': 'application/json'
             },
             body: data
         })
 
-        return await res.json();  //აქ ბრუნდება promise, რომლის დამუშვებაც შემიძლია .then -ით
+        return await res.json();
     }
 
 
-
     function bindPostData(form) {
-        form.addEventListener('submit', (e) => {         //submit მოვლენა მუშავდება ყოველ ჯერზე როცა ვცდილობთ რაიმე ფორმის გაგზავნას
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
 
             const statusMessage = document.createElement('img');
@@ -37,52 +36,26 @@ function forms() {
             statusMessage.style.cssText = `     
                 dislay: block;
                 margin: 0 auto;
-            `   //cssTextt უბრალოდ ვამატებ ელემენტს სტილებს
-            form.insertAdjacentElement('afterend', statusMessage);     //აქ ფორმას ვუმატებთ ამ არცთუ ისე დიდ მესიჯს
+            `
+
+            form.insertAdjacentElement('afterend', statusMessage);
+
+            const formData = new FormData(form);
+
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
+
+            postData('http://localhost:3000/requests', json)
 
 
-
-            // request.setRequestHeader('Content-type', 'application/json;');  //მონაცემების მიღება მინდა json-ით, ამიტომ: 'application/json'
-            const formData = new FormData(form);        //formData-ს მეშვეობით ვაგროვებთ მონაცემებს (ქვემოთ გაგრძელება fetch-ზე)
-
-
-            //ქვემოთ დაწერილი formData-ს უფრო ელეგანტურად დაწერის ხერხს დავწერ ახლა, ანუ ამ formData გადაქცევა Json-ად, მაგრამ formData-ს მაინც დავტოვებ კომენტარებში
-
-            const json = JSON.stringify(Object.fromEntries(formData.entries())); // აქ formData-სგან აღებულ მონაცემებს ჯერ გადავაქცევს მასივად, რომელიც შედგება მასივებისგან, ანუ formData.entries(), შემდეგ ამ ყველაფერს ვფუთავ ისევ ობიექტად Object.fromEntries და ბოლოს ამ კლასიკურ ობიექტს ვაქცევ JSON-ად, ანუ ამ ყველაფერს ვფუთად JSON.stringify()-ში. ამ json-ს კი ვაგზავნი სერვერზე 335-ხაზზე**
-
-            // const object = {};
-            // formData.forEach(function (value, key) {
-            //     object[key] = value;
-            // });
-
-
-            // fetch('server.php', {               // fetch-ის მეშვეობით კი ვაგზავნით ამ შეგროვილ მონაცემებს
-            //     method: "POST",
-            //     headers: {
-            //         'Content-type': 'application/json'          //ამას ვწერ, რადგან მე-300 ხაზის მიხედვით JSON ფორმატთან გვაქვს საქმე
-            //     },
-            //     body: JSON.stringify(object)
-            // })
-
-            postData('http://localhost:3000/requests', json) // ზემოთ დაკომენტარებული კოდი გადმოვიტანე აქ
-                // ეს ლინკი ზემოთ არის json სერვერის ლინკი, რომელიც ავიღე ტერმინალიდან 
-
-                // .then(data => data.text())  //ამას ვშლი (ნუ, მე ვაკომენტარებ) რადდგან იგი ზემოთ postData ფუქნციაში მაქვს დამალული
                 .then(data => {
-                    console.log(data);  // აქ request.response-ის ნაცვლად ჩავწერე data. ანუ  data ის მონაცემებია, რომელიც ბრუნდება promise-დან
+                    console.log(data);
                     showThanksModal(message.succes);
                     statusMessage.remove();
                 }).catch(() => {
                     showThanksModal(message.failure);
                 }).finally(() => {
-                    form.reset();       // ამას ვწერ finally-ში, რადგან იგი უნდა მოხდეს ნებისმიერ შემთხევაში
+                    form.reset();
                 })
-            /*რადგანდ დავწერე fetch, ახლა მჭირდება ჩემი მოთხოვნის დამუშავება. ქვემოთ კომენტარებში დავტოვებ request.addEventListener-ს, რადგან მახსოვდეს თუ აქამდე როგორ ხდებოდა მოთხოვნის დამუშავება და ახლა კი დავწერ ახალ მეთოდს და რადგან საქმე მაქცს promise-ებთან ამიტომაც გამოვიყენებ .then მეთოდს (რადგან fetch კონსტრუქტორიდან ბრუნდებქა promise-ები)*/
-
-            /*!!!!ახლა აქ ზემოთ რაც დავწერე, ყველაფერი მუშაობს იდეალურად, მაგრამ დამრჩა ბოლო დეტალი, რომ მონაცემთა ფორმატი გავაგზავნო 
-            JSON ფორმატით, ამიტომაც სულ ზემოთ 300 ხაზზე body-ს formData-ს მაგივრად გადავცემ JSON.stringify(object) */
-
-            // request.addEventListener('load', () => {        //load მოთხოვნის საბოლოო დასრულება
             //     if (request.status === 200) {
             //         console.log(request.response);
             //         showThanksModal(message.succes);
@@ -95,14 +68,14 @@ function forms() {
         });
     }
 
-    function showThanksModal(message) { //როდესაც მომხარებელი თავის ინფორმაციას შეიყვანს, იმნფორმაციის მოდალი დაიხურება და სხვა გაიხსნება 
-        const prevModalDialog = document.querySelector('.modal__dialog');      //მოვიპოვებ ამ მოდალს
+    function showThanksModal(message) {
+        const prevModalDialog = document.querySelector('.modal__dialog');
 
-        prevModalDialog.classList.add('hide');      //ვუმატებ კლასს hide, რომლის გააქტიურებისასაც ხამალავს მასს
+        prevModalDialog.classList.add('hide');
         openModal();
 
-        const thanksModal = document.createElement('div');      // ვამატემ ელემენტს
-        thanksModal.classList.add('modal__dialog');      // ვამატებ კლასს და ერთ modal__dialog-ს ვანაცვლებ მეორეთი
+        const thanksModal = document.createElement('div');
+        thanksModal.classList.add('modal__dialog');
         thanksModal.innerHTML = `
         <div class= 'modal__content'> 
           <div class="modal__close" data-close>×</div>
@@ -121,9 +94,8 @@ function forms() {
     }
 
 
-    fetch('http://localhost:3000/menu')  //აქედან მიბრუნებდა promise და ამიტომაც დავამუშავებ მას .then -ით
-        .then(data => data.json()) //ვეუბნები, რომ ავიღებ ამ პასუხს სერვერიდან, ანუ data-ს და გადავაქცევ ჯავასკრიპტ ობიექტად
-    // .then(res => console.log(res));
+    fetch('http://localhost:3000/menu')
+        .then(data => data.json())
 
 }
 

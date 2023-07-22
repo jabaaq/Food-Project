@@ -7,31 +7,31 @@ function slider() {
         current = document.querySelector('#current'),
         slidesWrapper = document.querySelector('.offer__slider-wrapper'),
         slidesField = document.querySelector('.offer__slider-inner'),
-        width = window.getComputedStyle(slidesWrapper).width;  //ამ ბრძანებით ვიგებ, რომელი სტილები იყო გამოყენებული ელემნტზე, შედეგად მიბრუნდება ობიექტი, სადაც ეს სტილები წერია და ბოლოს რომ ვწერ .width ამის  მეშვეობით, მოპოვებული სტილებიდან გამოვყოფ მხოლოდ width-ს (სიგანეს)
+        width = window.getComputedStyle(slidesWrapper).width;
 
     let slideIndex = 1;
     let offset = 0;
 
     if (slides.length < 10) {
-        total.textContent = `0${slides.length}`;        //თუ სლაიდების რიცხვი ნაკლები ინქება 10-ზე მაშინ მას ვამატებ წინ 0-ს
+        total.textContent = `0${slides.length}`;
         current.textContent = `0${slideIndex}`
     } else {
         total.textContent = slides.length;
         current.textContent = slideIndex;
     }
 
-    slidesField.style.width = 100 * slides.length + '%';  //სლაიდების რაოდენას ვამრავლებ 100%-ზე, რადგან იგი საიტზე დიდ ადგილს იკავებს და შესაბამისად ვჭიმავ მთელს სიგანეზე და ბოლოს ეს  '%' იმიტომ ვწერ, რომ css სტილები სხვანაირად ვერ გაიგებენ
+    slidesField.style.width = 100 * slides.length + '%';
     slidesField.style.display = 'flex';
     slidesField.style.transition = '0.5s all'
 
     slidesWrapper.style.overflow = 'hidden';
     slides.forEach(slide => {
-        slide.style.width = width; //შეიძლება ეს სლაიდები სხვადასხვა ზომის ყოფილიყო და ამ კოდით ყველას ერთი და იგივე ფართობს ვანიჭებ.
+        slide.style.width = width;
     })
 
-    slider.style.position = 'relative';     //slider-ში არსებული ელემენტები ნორმალურად წარმოისახება.
+    slider.style.position = 'relative';
 
-    const indicators = document.createElement('ol'),    //ol - ordered list
+    const indicators = document.createElement('ol'),
         dots = [];
     indicators.classList.add('carousel-indicators');
     indicators.style.cssText = `
@@ -47,9 +47,7 @@ function slider() {
     list-style: none;
 `;
 
-    slider.append(indicators);      //slider-ს დავამატე ეს indicators
-
-    //ახლა ქვემოთ უნდა შევქმნა სალიდების რაოდენობაზე დაყრდნობით წერტილები
+    slider.append(indicators);
 
     for (let i = 0; i < slides.length; i++) {
         const dot = document.createElement('li');
@@ -76,7 +74,7 @@ function slider() {
 
         indicators.append(dot);
 
-        dots.push(dot);     //dots მასივში, რომელიც ზემოთაა შექმნილი, ვამატებ ამ წერილს
+        dots.push(dot);
     }
 
     function deleteNotDigits(str) {
@@ -84,16 +82,16 @@ function slider() {
     }
 
     nextBtn.addEventListener('click', () => {
-        if (offset == deleteNotDigits(width) * (slides.length - 1)) {  //აქ უკვე ვიყნებ Regular Expressions(რეგულარული გამონათქვამებს) - /\D/g,
-            offset = 0; //ეს იმას ნიშნავს, რომ გადავსქროლე ბოლომდე სლაიდი უნდა დავბრუნდეს დასაწყისში
+        if (offset == deleteNotDigits(width) * (slides.length - 1)) {
+            offset = 0;
         } else {
             offset += deleteNotDigits(width)
         }
-        slidesField.style.transform = `translateX(-${offset}px) `//ღილაკზე დაჭერირას ელემენტი გადაინაცვლებს მარცხნივ და რადგანაც მარცხნივ გადადდის ვწერ უარყოფით რიცხვს  
-        if (slideIndex == slides.length) {      //როდესაც სლაიდის რიცხვი გავა ბოლოში იგი გახდება ისევ ერთი
+        slidesField.style.transform = `translateX(-${offset}px) `
+        if (slideIndex == slides.length) {
             slideIndex = 1;
         } else {
-            slideIndex++;   //სლაიდის რიცხვი გაიზრდება ერთით
+            slideIndex++;
         }
         if (slides.length < 10) {
             current.textContent = `0${slideIndex}`
@@ -115,10 +113,10 @@ function slider() {
         }
         slidesField.style.transform = `translateX(-${offset}px) `
 
-        if (slideIndex == 1) {      //როდესაც ვიმყოფები პირველ სლაიდზე და დავაჭერ წინა ღილაკს სლაიდის რიცხვი გადავა ბოლო საიტზე
+        if (slideIndex == 1) {
             slideIndex = slides.length;
         } else {
-            slideIndex--;       //უკანა ღილაკზე დაკლიკებისას სლაიდის რიცხვს ვამცირებ ერთით
+            slideIndex--;
         }
 
         if (slides.length < 10) {

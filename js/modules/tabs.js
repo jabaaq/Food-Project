@@ -15,21 +15,21 @@ function tabs() {
         });
     }
 
-    function showTabContent(i = 0) {     //ვუთებ ინდექსს i -ის მეშვეობით
+    function showTabContent(i = 0) {
         tabsContent[i].style.display = 'block';
         tabs[i].classList.add('tabheader__item_active');
     }
 
     hideTabContent();
-    showTabContent(); //თუ ეს ფუნქცია გამოვიძახე არგუმენტის გარეშე default-ად დაყენდება რაც ფუნქციას უწერია
+    showTabContent();
 
     tabsParent.addEventListener('click', (event) => {
         const target = event.target;
 
         if (target && target.classList.contains('tabheader__item')) {
-            tabs.forEach((item, i) => {     //გავარჩიე ტაბები
-                if (target == item) {   // თუ თარგეთი დაემთხვა ტაბის item-ს
-                    hideTabContent();           // მაშინ შექასრულოს ეს 2 ფუნქცია
+            tabs.forEach((item, i) => {
+                if (target == item) {
+                    hideTabContent();
                     showTabContent(i);
                 }
             });
