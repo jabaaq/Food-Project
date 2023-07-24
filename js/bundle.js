@@ -1,23 +1,27 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./js/modules/calc.js":
 /*!****************************!*\
   !*** ./js/modules/calc.js ***!
   \****************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 function calc() {
-    const result = document.querySelector('.calculating__result span')      //კლასსთან ერთად მოვიპოვებ span-ს
+    const result = document.querySelector('.calculating__result span')
 
     let sex, height, weight, age, ratio;
 
-    //აქ ქვემოთ ვწერ პირობას, რომ თუ localStorag-ში უკვე არის რაიმე ინფორმაცია, მაშინ ამ ინფორმაციას იქიდან ავიღებთ და ჩავდებთ ქვემოთ,  sex და ratio-ში,თუ არადა დავტოვებ ისევ default მნიშვნელობებს ისე, როგორც აქამდე იყო
 
     if (localStorage.getItem('sex')) {
         sex = localStorage.getItem('sex')
     } else {
-        sex = "female";     //თუ localStorage არ იყო ინფრომაცია, მაშინ sex-ს ის default იქნება "female"
+        sex = "female";
         localStorage.setItem('sex', 'female')
     }
 
@@ -25,22 +29,21 @@ function calc() {
     if (localStorage.getItem('ratio')) {
         ratio = localStorage.getItem('ratio')
     } else {
-        ratio = "1.375";     //თუ localStorage არ იყო ინფრომაცია, მაშინ sex-ს ის default იქნება "female"
+        ratio = "1.375";
         localStorage.setItem('retio', '1.375')
     }
 
-    //ქვემოთ შევქმნი ფუნციას, რომლის მიხედვითაც გავაკონტროლებ კალკუატორის ელემენტებს, საიტზე შესვლიას, ჯერ იქნება default მნიშნელობები არცეული, მას შემდეგ რაც უკვე მომხარებელი აირჩევს ელემენტებს საიტის გადატვირთვისას ის ელემენტები დარჩება არჩეული
+
 
     function initLocalSettings(selector, activeClass) {
         const elements = document.querySelectorAll(selector);
 
-        // ახლა როგორია ამ ფუნქციის ალგორითმი. ავიღებ ამ ელემენტის div-ებს და მათ შემდეგ გადავარჩევ. ჯერ როცა საიტზე შევდივარ, ყველა ღილაკს მოვაშორებ ჯერ აქტივობის კლასს, ყველა რომ სუფთა იყოს და შემდეგ აქტივობის კლასს მივანიჭებ იმ ელემენტს, რომელიც შეესაბამება მნიშვნელობას localStorage-დან
 
         elements.forEach(elem => {
-            elem.classList.remove(activeClass); //ელემენტებს ვაშორებ აქტივობის კლასს
+            elem.classList.remove(activeClass);
 
-            if (elem.getAttribute('id') === localStorage.getItem('sex')) {  //თუ ელემენტის ატრიბუტი იგივეა, რაც localStorage-ის ინფორმაცია
-                elem.classList.add(activeClass);    //მას ვანიჭებ აქტივობის კლასს
+            if (elem.getAttribute('id') === localStorage.getItem('sex')) {
+                elem.classList.add(activeClass);
             }
             if (elem.getAttribute('data-ratio') === localStorage.getItem('ratio')) {
                 elem.classList.add(activeClass);
@@ -52,9 +55,9 @@ function calc() {
     initLocalSettings('.calculating__choose_big div', 'calculating__choose-item_active')
 
     function clalcTotal() {
-        if (!sex || !height || !weight || !age || !ratio) {  //თუ რომელიმე არ იქნება მითითებული
+        if (!sex || !height || !weight || !age || !ratio) {
             result.textContent = '____';
-            return; //return ამას ვწერ იმისთვის, რომ მალევე შეწყდეს ფუნქცია და მომდევნო ფუქნციები არ განხორციელდეს, იმ შემთხვევაში თუ არ მექნება მითითებული რაიმე, ზემოთ ჩამოთვლითაგან
+            return;
         }
 
         if (sex === 'female') {
@@ -66,16 +69,16 @@ function calc() {
     clalcTotal();
 
     function getStaticInformation(selector, activeClass) {
-        const elements = document.querySelectorAll(selector); //რადგან მინდა div მოპოვება თითოეული მშობლის, ამიტომაც ვწერ ასე  
+        const elements = document.querySelectorAll(selector);
 
-        elements.forEach(elem => {      //თითოეულ ელემენტს ვანიჭებ eventlistener-ს
+        elements.forEach(elem => {
             elem.addEventListener('click', (e) => {
-                if (e.target.getAttribute('data-ratio')) {  //თუ ასეთი ატრიბუტი data-ratio გააჩნია ელემენტს, მაშინ.... 
-                    ratio = +e.target.getAttribute('data-ratio'); //ეს იმას ნიშნავს, რომ თუ მომხმმარებელი დააკლიკებს ვთქვათ Умеренная активность-ს ჩვენ ვდგებით და ვიღებთ იმ მნიშვნელობას, რაც უყენია data ატრიბუტი
-                    localStorage.setItem('ratio', +e.target.getAttribute('data-ratio'));//როდესაც ამ ელემენტებს ვაკლიკებ, ინფორმაცია ინახება localStorageში
+                if (e.target.getAttribute('data-ratio')) {
+                    ratio = +e.target.getAttribute('data-ratio');
+                    localStorage.setItem('ratio', +e.target.getAttribute('data-ratio'));
                 } else {
-                    sex = e.target.getAttribute('id');   //თუ ელემენტს არ გააჩნია data ატრიბუტი მოვიპოვებ მის აიდის, ქალის თუ კაცი
-                    localStorage.setItem('sex', e.target.getAttribute('id')); //აქაც იგივე, როცა ელემნტებს ვაკლიებ, ინფორმაცია ინახება localStorage-ში   
+                    sex = e.target.getAttribute('id');
+                    localStorage.setItem('sex', e.target.getAttribute('id'));
                 }
 
                 elements.forEach(elem => {
@@ -97,15 +100,15 @@ function calc() {
 
         input.addEventListener('input', () => {
 
-            if (input.value.match(/\D/g)) {       //ანუ თუ ჩაწრილი რიცხვები არ ემთხვევა ამ regular expressions შეიცვლება ბორდერი წითლად
+            if (input.value.match(/\D/g)) {
                 input.style.border = '1px solid red'
             } else {
                 input.style.border = 'none'
             }
 
-            switch (input.getAttribute('id')) {     //ის ორიენტირდება აიდიზე და ამ ჩაწერს ამ მონაცემებს განსაზღვრულ ცვლადებში: height, case, weight
+            switch (input.getAttribute('id')) {
                 case 'height':
-                    height = +input.value //თუ მართლა არის სიმაღლის ინპუტი, მაშინ ვიღებ ამ ცვლადს და ვწერ მასში იმ მნიშნველობას, რასაც წერს მომხმარებელი
+                    height = +input.value
                     break;
                 case 'weight':
                     weight = +input.value;
@@ -114,7 +117,7 @@ function calc() {
                     age = +input.value;
                     break;
             }
-            clalcTotal();       //მოცემულ ფუნქციას ვიძახებ არაერთხელ, რადგან მინდა, რომ შედეგი ყოველთვის ახლდებოდეს, არ აქვს მომხარებელს შეყავს ინფორმაცია, თი პირიქით, შლის. ბოლოში Ваша суточная норма калорий:-ში ყოველთვის უნდა ახლდეობდეს ინფრომაცია
+            clalcTotal();
         })
 
     }
@@ -126,7 +129,7 @@ function calc() {
 };
 
 
-module.exports = calc;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (calc);
 
 /***/ }),
 
@@ -134,21 +137,27 @@ module.exports = calc;
 /*!*****************************!*\
   !*** ./js/modules/cards.js ***!
   \*****************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/services */ "./js/services/services.js");
 
 function cards() {
 
     class MenuCard {
-        constructor(src, alt, title, descr, price, parentSelector, ...classes) { //parentSelector მოვიპოვებ მშობელს, სადაც ამ ყველაფერს შევტენი
+        constructor(src, alt, title, descr, price, parentSelector, ...classes) {
             this.src = src;
             this.alt = alt;
             this.title = title;
             this.descr = descr;
             this.price = price;
-            this.classes = classes;     //არ დამავიწყდეს, რომ ეს იქნება მასივი
-            this.parent = document.querySelector(parentSelector);  // მასში დევს ახლა DOM ელემენტი, რომელსაც ქვემოთ გამოვიყენებ
+            this.classes = classes;
+            this.parent = document.querySelector(parentSelector);
             this.transfer = 37;
-            this.changeToUAH();  // მოცემულ მეთოდს ვიძახებ აქვე, კონსტრუქტორში
+            this.changeToUAH();
         }
         changeToUAH() {
             this.price = this.price * this.transfer;        //მონაცემები მოდის დოლარებში და მე გადამყავს გრივნებში
@@ -157,12 +166,12 @@ function cards() {
         render() {
             const element = document.createElement('div');
 
-            if (this.classes.length === 0) {  //ვაყენებ default პარამეტრს
+            if (this.classes.length === 0) {
                 this.element = 'menu__item';
                 element.classList.add(this.element);
-            } else {                        //აქ ქვემოთ element არის 'div' და 
+            } else {
                 this.classes.forEach(className => element.classList.add(className));
-                // რადგან this.classes არის მასივი, ვამუშავებ მას და ბოლოს ვუკავშირებ 'div'-ს
+
             }
 
             element.innerHTML = `
@@ -174,32 +183,21 @@ function cards() {
                     <div class="menu__item-cost">Цена:</div>
                     <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
                 </div>         
-        `;                          // აქ ზემოთ this.price-ში უკვე მოდიფიცირებული თანხა დაიწერება,ანუ გრივნებში გადაყვანილი
-            this.parent.append(element); // რადგან იგი DOM ელემენტი მასზე გამოიყენება მეთოდი append();
+        `;
+            this.parent.append(element);
         }
     }
 
-
-    const getResource = async (url) => {    //ამ ფუნქციას მერე გამოვიძახებ
-        const res = await fetch(url);
-        if (!res.ok) {  // ანუ აქ ჩემს მოთხოვნაში რაღაც არ წავიდა კარგად, უნდა გადმოვაგდო რაღაც შეცდომა და როცა შეცდომის ხელით გადმოგდება ხდება, ესეიგი მუშავდება .catch მეთოდი. 
-            throw new Error(`Could not fetch ${url}, status: ${res.status} `)
-        }
-        return await res.json();
-    }
-
-
-
-    getResource('http://localhost:3000/menu')   //აქ ვიყენებ ზემოთ დაწერილ ფუნქციას და ახლა მას დავამუშავებ:
-        .then(data => {     //data არის სერვერიდან მოსული მონაცემები
-            data.forEach(({ img, altimg, title, descr, price }) => {  //აქ {}-ებში მიწერია ობიექტის დესტრუქტურიზაცია
-                new MenuCard(img, altimg, title, descr, price, ".menu .container").render(); //ვიძახებ კონსტრუქტორ MenuCard-ს. ეს კონსტრუქტორი შეიქმენა იმდენჯერ, რამდენი ობიექტიც მექნება სერვერიდნა მოსულ მასივში
-            });                                            // ვიდეოში new MenuCard -ში ბოლოს მითითა '.menu .container'
+    (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.getResource)('http://localhost:3000/menu')
+        .then(data => {
+            data.forEach(({ img, altimg, title, descr, price }) => {
+                new MenuCard(img, altimg, title, descr, price, ".menu .container").render();
+            });
         });
 
 }
 
-module.exports = cards;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (cards);
 
 /***/ }),
 
@@ -207,10 +205,19 @@ module.exports = cards;
 /*!*****************************!*\
   !*** ./js/modules/forms.js ***!
   \*****************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-function forms() {
-    const forms = document.querySelectorAll('form');
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal */ "./js/modules/modal.js");
+/* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/services */ "./js/services/services.js");
+
+
+
+function forms(formSelector, modalTimerId) {
+    const forms = document.querySelectorAll(formSelector);
 
     const message = {
         loading: 'img/form/spinner.svg',
@@ -220,27 +227,13 @@ function forms() {
 
     };
 
-    forms.forEach(item => {         // forEach-ის მეშვეობით თითოეულ form-ს რომელიც არის HTML დოკუმენტში, ვუმატებ postData-ს.
+    forms.forEach(item => {
         bindPostData(item);
     });
 
-    //აქ ქვემოთ data მონაცემები, რომელთა დაპოსტვაც მოხდება ამ ფუნქციაში
-    const postData = async (url, data) => {        //რა ხდება ახლა ამ postData ფუნქციაში, ალაგენს(აყენებს) ჩვენს მოთხოვნავს. შემდეგ ხდება ამ მოთხოვნის 
-        const res = await fetch(url, {          // და-fetch-ვა, ანუ ეს მოთხოვნა იგზავნება სერვერზე, შემდეგ ვიღებ რაღაც პასუხს სერვერიდან (თუნდაც ის, რომ
-            method: "POST",                 // დაიპოსტა წარმატებიტ) და ბოლოს ხდება ამ პასუხის ტრანსფორმირება json-ში
-            headers: {
-                'Content-type': 'application/json'          //ამას ვწერ, რადგან მე-300 ხაზის მიხედვით JSON ფორმატთან გვაქვს საქმე
-            },
-            body: data
-        })
-
-        return await res.json();  //აქ ბრუნდება promise, რომლის დამუშვებაც შემიძლია .then -ით
-    }
-
-
 
     function bindPostData(form) {
-        form.addEventListener('submit', (e) => {         //submit მოვლენა მუშავდება ყოველ ჯერზე როცა ვცდილობთ რაიმე ფორმის გაგზავნას
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
 
             const statusMessage = document.createElement('img');
@@ -248,52 +241,26 @@ function forms() {
             statusMessage.style.cssText = `     
                 dislay: block;
                 margin: 0 auto;
-            `   //cssTextt უბრალოდ ვამატებ ელემენტს სტილებს
-            form.insertAdjacentElement('afterend', statusMessage);     //აქ ფორმას ვუმატებთ ამ არცთუ ისე დიდ მესიჯს
+            `
+
+            form.insertAdjacentElement('afterend', statusMessage);
+
+            const formData = new FormData(form);
+
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
+
+            (0,_services_services__WEBPACK_IMPORTED_MODULE_1__.postData)('http://localhost:3000/requests', json)
 
 
-
-            // request.setRequestHeader('Content-type', 'application/json;');  //მონაცემების მიღება მინდა json-ით, ამიტომ: 'application/json'
-            const formData = new FormData(form);        //formData-ს მეშვეობით ვაგროვებთ მონაცემებს (ქვემოთ გაგრძელება fetch-ზე)
-
-
-            //ქვემოთ დაწერილი formData-ს უფრო ელეგანტურად დაწერის ხერხს დავწერ ახლა, ანუ ამ formData გადაქცევა Json-ად, მაგრამ formData-ს მაინც დავტოვებ კომენტარებში
-
-            const json = JSON.stringify(Object.fromEntries(formData.entries())); // აქ formData-სგან აღებულ მონაცემებს ჯერ გადავაქცევს მასივად, რომელიც შედგება მასივებისგან, ანუ formData.entries(), შემდეგ ამ ყველაფერს ვფუთავ ისევ ობიექტად Object.fromEntries და ბოლოს ამ კლასიკურ ობიექტს ვაქცევ JSON-ად, ანუ ამ ყველაფერს ვფუთად JSON.stringify()-ში. ამ json-ს კი ვაგზავნი სერვერზე 335-ხაზზე**
-
-            // const object = {};
-            // formData.forEach(function (value, key) {
-            //     object[key] = value;
-            // });
-
-
-            // fetch('server.php', {               // fetch-ის მეშვეობით კი ვაგზავნით ამ შეგროვილ მონაცემებს
-            //     method: "POST",
-            //     headers: {
-            //         'Content-type': 'application/json'          //ამას ვწერ, რადგან მე-300 ხაზის მიხედვით JSON ფორმატთან გვაქვს საქმე
-            //     },
-            //     body: JSON.stringify(object)
-            // })
-
-            postData('http://localhost:3000/requests', json) // ზემოთ დაკომენტარებული კოდი გადმოვიტანე აქ
-                // ეს ლინკი ზემოთ არის json სერვერის ლინკი, რომელიც ავიღე ტერმინალიდან 
-
-                // .then(data => data.text())  //ამას ვშლი (ნუ, მე ვაკომენტარებ) რადდგან იგი ზემოთ postData ფუქნციაში მაქვს დამალული
                 .then(data => {
-                    console.log(data);  // აქ request.response-ის ნაცვლად ჩავწერე data. ანუ  data ის მონაცემებია, რომელიც ბრუნდება promise-დან
+                    console.log(data);
                     showThanksModal(message.succes);
                     statusMessage.remove();
                 }).catch(() => {
                     showThanksModal(message.failure);
                 }).finally(() => {
-                    form.reset();       // ამას ვწერ finally-ში, რადგან იგი უნდა მოხდეს ნებისმიერ შემთხევაში
+                    form.reset();
                 })
-            /*რადგანდ დავწერე fetch, ახლა მჭირდება ჩემი მოთხოვნის დამუშავება. ქვემოთ კომენტარებში დავტოვებ request.addEventListener-ს, რადგან მახსოვდეს თუ აქამდე როგორ ხდებოდა მოთხოვნის დამუშავება და ახლა კი დავწერ ახალ მეთოდს და რადგან საქმე მაქცს promise-ებთან ამიტომაც გამოვიყენებ .then მეთოდს (რადგან fetch კონსტრუქტორიდან ბრუნდებქა promise-ები)*/
-
-            /*!!!!ახლა აქ ზემოთ რაც დავწერე, ყველაფერი მუშაობს იდეალურად, მაგრამ დამრჩა ბოლო დეტალი, რომ მონაცემთა ფორმატი გავაგზავნო 
-            JSON ფორმატით, ამიტომაც სულ ზემოთ 300 ხაზზე body-ს formData-ს მაგივრად გადავცემ JSON.stringify(object) */
-
-            // request.addEventListener('load', () => {        //load მოთხოვნის საბოლოო დასრულება
             //     if (request.status === 200) {
             //         console.log(request.response);
             //         showThanksModal(message.succes);
@@ -306,14 +273,14 @@ function forms() {
         });
     }
 
-    function showThanksModal(message) { //როდესაც მომხარებელი თავის ინფორმაციას შეიყვანს, იმნფორმაციის მოდალი დაიხურება და სხვა გაიხსნება 
-        const prevModalDialog = document.querySelector('.modal__dialog');      //მოვიპოვებ ამ მოდალს
+    function showThanksModal(message) {
+        const prevModalDialog = document.querySelector('.modal__dialog');
 
-        prevModalDialog.classList.add('hide');      //ვუმატებ კლასს hide, რომლის გააქტიურებისასაც ხამალავს მასს
-        openModal();
+        prevModalDialog.classList.add('hide');
+        (0,_modal__WEBPACK_IMPORTED_MODULE_0__.openModal)('.modal', modalTimerId);
 
-        const thanksModal = document.createElement('div');      // ვამატემ ელემენტს
-        thanksModal.classList.add('modal__dialog');      // ვამატებ კლასს და ერთ modal__dialog-ს ვანაცვლებ მეორეთი
+        const thanksModal = document.createElement('div');
+        thanksModal.classList.add('modal__dialog');
         thanksModal.innerHTML = `
         <div class= 'modal__content'> 
           <div class="modal__close" data-close>×</div>
@@ -327,18 +294,15 @@ function forms() {
             thanksModal.remove();
             prevModalDialog.classList.add('show');
             prevModalDialog.classList.remove('hide');
-            closeModal();
+            (0,_modal__WEBPACK_IMPORTED_MODULE_0__.closeModal)('.modal');
         }, 4000);
     }
-
-
-    fetch('http://localhost:3000/menu')  //აქედან მიბრუნებდა promise და ამიტომაც დავამუშავებ მას .then -ით
-        .then(data => data.json()) //ვეუბნები, რომ ავიღებ ამ პასუხს სერვერიდან, ანუ data-ს და გადავაქცევ ჯავასკრიპტ ობიექტად
-    // .then(res => console.log(res));
+    fetch('http://localhost:3000/menu')
+        .then(data => data.json())
 
 }
 
-module.exports = forms;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (forms);
 
 /***/ }),
 
@@ -346,62 +310,61 @@ module.exports = forms;
 /*!*****************************!*\
   !*** ./js/modules/modal.js ***!
   \*****************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-function modal() {
-    const modalTrigger = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal');
-    // modalCloseBtn = document.querySelectorAll('[data-close]'); //მოცემული ბრძანება არ იმოქმედებს ყველა ღილაკზე, თუნდაც იმათზე, რომელიც შეიქმნა დინამიურად, ანუ შეიქმნა ჯავასქრიპტში, ამიტომ მას წავშლი და ქვემოთ დავწერ სწორ ფორმას
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   closeModal: () => (/* binding */ closeModal),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   openModal: () => (/* binding */ openModal)
+/* harmony export */ });
+function openModal(modalSelector, modalTimerId) {
+    const modal = document.querySelector(modalSelector);
+    modal.classList.add('show');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
 
-    function openModal() {      // აქაც უბრალოდ ვიცავ DRY წესს
-        modal.classList.add('show');
-        modal.classList.remove('hide');
-        document.body.style.overflow = 'hidden';
-        clearInterval(modalTimerId); //ერთხელ რომ გაიხსნება მოდალური ფანჯარა, მეორეჯერ აღარ გაიხსნება, ანუ არ მოაბეზრებს მომხმარებელს
+    console.log(modalTimerId);
+    if (modalTimerId) {
+        clearInterval(modalTimerId)
     }
+}
 
-    modalTrigger.forEach(btn => {               //გადავარიე სათითაოდ კნოპკები, რომ იმუშაოს მოდალურმა ფანჯარამ, ანუ პირდაპირ ვერ გავაკეთებდი
-        btn.addEventListener('click', openModal);
+
+function closeModal(modalSelector) {
+    const modal = document.querySelector(modalSelector);
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+function modal(triggerSelector, modalSelector, modalTimerId) {
+    const modalTrigger = document.querySelectorAll(triggerSelector),
+        modal = document.querySelector(modalSelector);
+
+    modalTrigger.forEach(btn => {
+        btn.addEventListener('click', () => openModal(modalSelector, modalTimerId)); //საიტის გაშვებისასთან ერთად რომ არ გაიშვას openModal, წინ ვუწერ () =>
     });
 
 
-    function closeModal() {    // რადგან closeModal()-ში არსებული კოდის რამოდენიმეჯერ გამოყენება მიწევდა იგი ვაქციე ფუნქციად  
-        modal.classList.add('hide');        //რომ არ დავუშვლა DRY (Don't Repeat Youreself)  შეცდომა
-        modal.classList.remove('show');
-        document.body.style.overflow = '';
-    }
 
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target.getAttribute('data-close') == '') {
+            closeModal(modalSelector);
+        }
+    });
 
-
-
-    // modalCloseBtn.forEach(closeBtn => {     //აქაც ზუსტად იგივე გავაკე, მაგარამ ჯერ querySelectorAll გადავაკეთე, ეს მახსოვდეს!
-    //     closeBtn.addEventListener('click', closeModal); // ვამატებ ფუნქციას closeModal-ს ფრჩხილების გარეშე 
-    // });
-
-
-    modal.addEventListener('click', (e) => {        // აქ ვამატებ ბრძანებას, რომ მოდალური ფანჯარა დავხურო უკანა ფონზე დაკლიკებისას
-        if (e.target === modal || e.target.getAttribute('data-close') == '') {       //e.target-ით მივიღებ მონაცემებს, თუ სად ვაკლიკებ და თუ იგი დაემთხვა modal-ს, მაშინ მას ვხურავ
-            closeModal();       // აქ კი ვამატებ ფუნქციას closeModal()-ს უკვე ფრჩხილებით
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Escape' && modal.classList.contains('show')) {
+            closeModal(modalSelector);
         }
     });
 
 
-    document.addEventListener('keydown', (e) => {
-        if (e.code === 'Escape' && modal.classList.contains('show')) {  //e.code-ის მეშვეობით, ვუთითებ, რომ ეს ღილაკი უნდა იყოს Escape
-            closeModal();       //და აქცე ზემოთ ვუთითებ, რომ თუ modal შეიცავს კლასს show-ს მაშინ იმოქმედეოს Escape ღილაკმა
-        }                          // ეს გავაკეთე იმიტომ, რომ ყოველჯერზე და Escape-ზე დაკლიკებბისას არ ამუშვდეს closeModal(); ფუნქცია  
-    });
-
-    const modalTimerId = setTimeout(openModal, 50000);
-
-    // window.addEventListener('scroll', () => {
-    //     if (window.pageYOffset + document.documentElement.clientHeight <= document.documentElement.scrollHeight - 1);  /*ბოლომდე ჩასქროლილ საიტს ვადარებ მთელი საიტის სიგრძეს და საიტის დასრულებამდე სანამ დარჩება 1 პიქსელი (რადგან სიზუსტისთვის, მიწერია -1) ამომიგდებს მოდალურ ფანჯარას*/
-    //     openModal();
-    // });
 
     function ShowModalByScroll() {
         if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 1) {
-            openModal();
+            openModal(modalSelector, modalTimerId);
             window.removeEventListener('scroll', ShowModalByScroll);
         }
     }
@@ -410,7 +373,8 @@ function modal() {
 
 }
 
-module.exports = modal;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modal);
+
 
 /***/ }),
 
@@ -418,42 +382,46 @@ module.exports = modal;
 /*!******************************!*\
   !*** ./js/modules/slider.js ***!
   \******************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-function slider() {
-    const prevBtn = document.querySelector('.offer__slider-prev'),
-        nextBtn = document.querySelector('.offer__slider-next'),
-        slider = document.querySelector('.offer__slider'),
-        slides = document.querySelectorAll('.offer__slide'),
-        total = document.querySelector('#total'),
-        current = document.querySelector('#current'),
-        slidesWrapper = document.querySelector('.offer__slider-wrapper'),
-        slidesField = document.querySelector('.offer__slider-inner'),
-        width = window.getComputedStyle(slidesWrapper).width;  //ამ ბრძანებით ვიგებ, რომელი სტილები იყო გამოყენებული ელემნტზე, შედეგად მიბრუნდება ობიექტი, სადაც ეს სტილები წერია და ბოლოს რომ ვწერ .width ამის  მეშვეობით, მოპოვებული სტილებიდან გამოვყოფ მხოლოდ width-ს (სიგანეს)
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function slider({ container, slide, nextArrow, prevArrow, totalCounter, currentCounter, wrapper, field }) {
+    const prevBtn = document.querySelector(prevArrow),
+        nextBtn = document.querySelector(nextArrow),
+        slider = document.querySelector(container),
+        slides = document.querySelectorAll(slide),
+        total = document.querySelector(totalCounter),
+        current = document.querySelector(currentCounter),
+        slidesWrapper = document.querySelector(wrapper),
+        slidesField = document.querySelector(field),
+        width = window.getComputedStyle(slidesWrapper).width;
 
     let slideIndex = 1;
     let offset = 0;
 
     if (slides.length < 10) {
-        total.textContent = `0${slides.length}`;        //თუ სლაიდების რიცხვი ნაკლები ინქება 10-ზე მაშინ მას ვამატებ წინ 0-ს
+        total.textContent = `0${slides.length}`;
         current.textContent = `0${slideIndex}`
     } else {
         total.textContent = slides.length;
         current.textContent = slideIndex;
     }
 
-    slidesField.style.width = 100 * slides.length + '%';  //სლაიდების რაოდენას ვამრავლებ 100%-ზე, რადგან იგი საიტზე დიდ ადგილს იკავებს და შესაბამისად ვჭიმავ მთელს სიგანეზე და ბოლოს ეს  '%' იმიტომ ვწერ, რომ css სტილები სხვანაირად ვერ გაიგებენ
+    slidesField.style.width = 100 * slides.length + '%';
     slidesField.style.display = 'flex';
     slidesField.style.transition = '0.5s all'
 
     slidesWrapper.style.overflow = 'hidden';
     slides.forEach(slide => {
-        slide.style.width = width; //შეიძლება ეს სლაიდები სხვადასხვა ზომის ყოფილიყო და ამ კოდით ყველას ერთი და იგივე ფართობს ვანიჭებ.
+        slide.style.width = width;
     })
 
-    slider.style.position = 'relative';     //slider-ში არსებული ელემენტები ნორმალურად წარმოისახება.
+    slider.style.position = 'relative';
 
-    const indicators = document.createElement('ol'),    //ol - ordered list
+    const indicators = document.createElement('ol'),
         dots = [];
     indicators.classList.add('carousel-indicators');
     indicators.style.cssText = `
@@ -469,9 +437,7 @@ function slider() {
     list-style: none;
 `;
 
-    slider.append(indicators);      //slider-ს დავამატე ეს indicators
-
-    //ახლა ქვემოთ უნდა შევქმნა სალიდების რაოდენობაზე დაყრდნობით წერტილები
+    slider.append(indicators);
 
     for (let i = 0; i < slides.length; i++) {
         const dot = document.createElement('li');
@@ -498,7 +464,7 @@ function slider() {
 
         indicators.append(dot);
 
-        dots.push(dot);     //dots მასივში, რომელიც ზემოთაა შექმნილი, ვამატებ ამ წერილს
+        dots.push(dot);
     }
 
     function deleteNotDigits(str) {
@@ -506,16 +472,16 @@ function slider() {
     }
 
     nextBtn.addEventListener('click', () => {
-        if (offset == deleteNotDigits(width) * (slides.length - 1)) {  //აქ უკვე ვიყნებ Regular Expressions(რეგულარული გამონათქვამებს) - /\D/g,
-            offset = 0; //ეს იმას ნიშნავს, რომ გადავსქროლე ბოლომდე სლაიდი უნდა დავბრუნდეს დასაწყისში
+        if (offset == deleteNotDigits(width) * (slides.length - 1)) {
+            offset = 0;
         } else {
             offset += deleteNotDigits(width)
         }
-        slidesField.style.transform = `translateX(-${offset}px) `//ღილაკზე დაჭერირას ელემენტი გადაინაცვლებს მარცხნივ და რადგანაც მარცხნივ გადადდის ვწერ უარყოფით რიცხვს  
-        if (slideIndex == slides.length) {      //როდესაც სლაიდის რიცხვი გავა ბოლოში იგი გახდება ისევ ერთი
+        slidesField.style.transform = `translateX(-${offset}px) `
+        if (slideIndex == slides.length) {
             slideIndex = 1;
         } else {
-            slideIndex++;   //სლაიდის რიცხვი გაიზრდება ერთით
+            slideIndex++;
         }
         if (slides.length < 10) {
             current.textContent = `0${slideIndex}`
@@ -537,10 +503,10 @@ function slider() {
         }
         slidesField.style.transform = `translateX(-${offset}px) `
 
-        if (slideIndex == 1) {      //როდესაც ვიმყოფები პირველ სლაიდზე და დავაჭერ წინა ღილაკს სლაიდის რიცხვი გადავა ბოლო საიტზე
+        if (slideIndex == 1) {
             slideIndex = slides.length;
         } else {
-            slideIndex--;       //უკანა ღილაკზე დაკლიკებისას სლაიდის რიცხვს ვამცირებ ერთით
+            slideIndex--;
         }
 
         if (slides.length < 10) {
@@ -579,7 +545,7 @@ function slider() {
 
 }
 
-module.exports = slider;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (slider);
 
 /***/ }),
 
@@ -587,40 +553,45 @@ module.exports = slider;
 /*!****************************!*\
   !*** ./js/modules/tabs.js ***!
   \****************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-function tabs() {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass) {
     //Tabs  
 
-    const tabs = document.querySelectorAll('.tabheader__item'),
-        tabsContent = document.querySelectorAll('.tabcontent'),
-        tabsParent = document.querySelector('.tabheader__items');
+    const tabs = document.querySelectorAll(tabsSelector),
+        tabsContent = document.querySelectorAll(tabsContentSelector),
+        tabsParent = document.querySelector(tabsParentSelector);
 
     function hideTabContent() {
         tabsContent.forEach(item => {
-            item.style.display = 'none';
+            item.classList.add('hide');
+            item.classList.remove('show', 'fade');
         });
 
         tabs.forEach(item => {
-            item.classList.remove('tabheader__item_active');
+            item.classList.remove(activeClass);
         });
     }
 
-    function showTabContent(i = 0) {     //ვუთებ ინდექსს i -ის მეშვეობით
+    function showTabContent(i = 0) {
         tabsContent[i].style.display = 'block';
         tabs[i].classList.add('tabheader__item_active');
     }
 
     hideTabContent();
-    showTabContent(); //თუ ეს ფუნქცია გამოვიძახე არგუმენტის გარეშე default-ად დაყენდება რაც ფუნქციას უწერია
+    showTabContent();
 
     tabsParent.addEventListener('click', (event) => {
         const target = event.target;
 
-        if (target && target.classList.contains('tabheader__item')) {
-            tabs.forEach((item, i) => {     //გავარჩიე ტაბები
-                if (target == item) {   // თუ თარგეთი დაემთხვა ტაბის item-ს
-                    hideTabContent();           // მაშინ შექასრულოს ეს 2 ფუნქცია
+        if (target && target.classList.contains(tabsSelector.slice(1))) {   //Deleting ' . ' from the sting, using the slice
+            tabs.forEach((item, i) => {
+                if (target == item) {
+                    hideTabContent();
                     showTabContent(i);
                 }
             });
@@ -630,7 +601,7 @@ function tabs() {
 }
 
 
-module.exports = tabs;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (tabs);
 
 /***/ }),
 
@@ -638,10 +609,13 @@ module.exports = tabs;
 /*!*****************************!*\
   !*** ./js/modules/timer.js ***!
   \*****************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-function timer() {
-    const deadline = '2023-07-10';
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function timer(id, deadline) {
 
     function underZero(num) {
         if (num < 0) {
@@ -650,17 +624,15 @@ function timer() {
         return num;
     }
 
-    function getTimeRemaining(endtime) {  //ვქმნი ფუქნციას რომ მივიღო სხვაობა დედლაიის ახლანდელ დროსთან
-        const t = underZero(Date.parse(endtime) - Date.parse(new Date())),  /* როდესაც ფუნქცია გაიშვება, მივიღებ სხვაობას
-    endtime-სა და დღევანდელ დროს new Date() შორის მილიწამებში */
-            days = Math.floor(t / (1000 * 60 * 60 * 24)), /* ვანაგრიშობ დღეებს, ზემოთ მიღებულ სხვაობას, ანუ t-ს ვყობ 1 დღეში არსებულ მილიწამებზე და ვამრგვალებ  Math.floor()-ით */
-            hours = Math.floor((t / (1000 * 60 * 60) % 24)), /* % 24 იმიტომ, რომ საიტზე წამზომი არ გაცდეს 24 საათს და თუ გაცდა გადავიდეს დღეებში */
+    function getTimeRemaining(endtime) {
+        const t = underZero(Date.parse(endtime) - Date.parse(new Date())),
+            /* როდესაც ფუნქცია გაიშვება, მივიღებ სხვაობას endtime-სა და დღევანდელ დროს new Date() შორის მილიწამებში */
+            days = Math.floor(t / (1000 * 60 * 60 * 24)),
+            /* ვანაგრიშობ დღეებს, ზემოთ მიღებულ სხვაობას, ანუ t-ს ვყობ 1 დღეში არსებულ მილიწამებზე და ვამრგვალებ  Math.floor()-ით */
+            hours = Math.floor((t / (1000 * 60 * 60) % 24)),
+            /* % 24 იმიტომ, რომ საიტზე წამზომი არ გაცდეს 24 საათს და თუ გაცდა გადავიდეს დღეებში */
             minutes = Math.floor((t / 1000 / 60) % 60),
             seconds = Math.floor((t / 1000) % 60);
-
-
-
-        //რადგან ეს ცვლადები ფუნქციაშია, ახლა ვიზამ ისე, რომ ისინი ფუქნციის გარეთ მივიღო
 
         return {
             'total': t,
@@ -672,15 +644,13 @@ function timer() {
 
     }
 
-    function getZero(num) {         // ამ ფუნქციის მეშვეობით ტაიმერში აქამდე თუ ეწერება: 8 დღე, 6 საათი, 48 წუთი, 9 წამი
-        if (num >= 0 && num < 10) {                                     // ახლა ეწერება: 08 დღე, 06 საათი, 48 წუთი, 09 წამი ..
-            return `0${num}`;                               // ანუ თუ რიცხვი 10-ზე დაბლაა მას წინ დაეწერება 0
+    function getZero(num) {
+        if (num >= 0 && num < 10) {
+            return `0${num}`;
         } else {
             return num;
         }
     }
-
-    //რადგან ეს ყველაფერი დავასრულე, ახლა დავწერ ფუნქციას, რომელიც დააყენებს ტაიმერს პირდაპირ საიტზე
 
     function setClock(selector, endtime) {
         const timer = document.querySelector(selector),
@@ -688,31 +658,65 @@ function timer() {
             hours = timer.querySelector('#hours'),
             minutes = timer.querySelector('#minutes'),
             seconds = timer.querySelector('#seconds'),
-            timeInterval = setInterval(updateClock, 1000);   //ვიყენებ setInterval-ს რომ ყოველ წამს გამოიძახოს updateClock ფუნქცია
+            timeInterval = setInterval(updateClock, 1000);
 
-        updateClock();  /*ფუნქციას ვიძახებ თავში რადგან HTML კოდი ვერ ასწრებს ჩატვირთვას და ჯერ მაჩვენებს HTMLკოდში მითითებულ მნიშვნელობებს
-        ახლა კი ყველაფერი გამოსწორდება*/
-
-        // ახლა ვქმნი ფუნქციას, რომელიც განაახლებს ტაიმერს ყოველ წამს
+        updateClock();
         function updateClock() {
             const t = getTimeRemaining(endtime);
-            /*მოცემულ t ცვლადში იწერება getTimeRemaining-ის რეზულტატი, მისი რეზულტატი კი არის ობიექტი სხვადასხვა თვისებებით */
+
             days.innerHTML = getZero(t.days);
             hours.innerHTML = getZero(t.hours);
             minutes.innerHTML = getZero(t.minutes);
             seconds.innerHTML = getZero(t.seconds);
 
-            if (t.total <= 0) {   // როდესაც t.total დასრულდება, ანუ ჩამოვა ტაიმერი 0-მდე 
-                clearInterval(timeInterval);        // timeInterval შეწყვეტს მუშაობას და შესაბამისად  updateClock ფუნცქცია აღარ გამოძახდება
+            if (t.total <= 0) {
+                clearInterval(timeInterval);
             }
         };
     }
 
-    setClock('.timer', deadline);
+    setClock(id, deadline);
 
 }
 
-module.exports = timer;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (timer);
+
+/***/ }),
+
+/***/ "./js/services/services.js":
+/*!*********************************!*\
+  !*** ./js/services/services.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getResource: () => (/* binding */ getResource),
+/* harmony export */   postData: () => (/* binding */ postData)
+/* harmony export */ });
+const postData = async (url, data) => {
+    const res = await fetch(url, {
+        method: "POST",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: data
+    })
+
+    return await res.json();
+}
+
+
+const getResource = async (url) => {
+    const res = await fetch(url);
+    if (!res.ok) {
+        throw new Error(`Could not fetch ${url}, status: ${res.status} `)
+    }
+    return await res.json();
+}
+
+
+
 
 /***/ })
 
@@ -743,32 +747,77 @@ module.exports = timer;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 /*!**********************!*\
   !*** ./js/script.js ***!
   \**********************/
-/* eslint-disable quotes */
-/* eslint-disable indent */
-/* eslint-disable no-unused-vars */
-window.addEventListener('DOMContentLoaded', () => {
-    //webpack
-    const tabs = __webpack_require__(/*! ./modules/tabs */ "./js/modules/tabs.js"),
-        modal = __webpack_require__(/*! ./modules/modal */ "./js/modules/modal.js"),
-        timer = __webpack_require__(/*! ./modules/timer */ "./js/modules/timer.js"),
-        slider = __webpack_require__(/*! ./modules/slider */ "./js/modules/slider.js"),
-        calc = __webpack_require__(/*! ./modules/calc */ "./js/modules/calc.js"),
-        cards = __webpack_require__(/*! ./modules/cards */ "./js/modules/cards.js"),
-        forms = __webpack_require__(/*! ./modules/forms */ "./js/modules/forms.js");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/tabs */ "./js/modules/tabs.js");
+/* harmony import */ var _modules_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/modal */ "./js/modules/modal.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/timer */ "./js/modules/timer.js");
+/* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/slider */ "./js/modules/slider.js");
+/* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/calc */ "./js/modules/calc.js");
+/* harmony import */ var _modules_cards__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/cards */ "./js/modules/cards.js");
+/* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/forms */ "./js/modules/forms.js");
 
-    tabs();
-    modal();
-    timer();
-    slider();
-    calc();
-    cards();
-    forms();
+
+
+
+
+
+
+
+
+window.addEventListener('DOMContentLoaded', () => {
+    const modalTimerId = setTimeout(() => (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__.openModal)('.modal', modalTimerId), 400000);
+
+    (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_0__["default"])('.tabheader__item', '.tabcontent', '.tabheader__items', 'tabheader__item_active');
+    (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])('[data-modal]', '.modal', modalTimerId);
+    (0,_modules_timer__WEBPACK_IMPORTED_MODULE_2__["default"])('.timer', '2023-08-3');
+    (0,_modules_slider__WEBPACK_IMPORTED_MODULE_3__["default"])({
+        container: '.offer__slider',
+        slide: '.offer__slide',
+        nextArrow: '.offer__slider-next',
+        prevArrow: '.offer__slider-prev',
+        totalCounter: '#total',
+        currentCounter: '#current',
+        wrapper: '.offer__slider-wrapper',
+        field: '.offer__slider-inner'
+    });
+    (0,_modules_calc__WEBPACK_IMPORTED_MODULE_4__["default"])();
+    (0,_modules_cards__WEBPACK_IMPORTED_MODULE_5__["default"])();
+    (0,_modules_forms__WEBPACK_IMPORTED_MODULE_6__["default"])('form', modalTimerId);
 
 
 
