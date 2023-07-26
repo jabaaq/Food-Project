@@ -7,8 +7,8 @@ function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass
 
     function hideTabContent() {
         tabsContent.forEach(item => {
-            item.classList.add('hide');
-            item.classList.remove('show', 'fade');
+            item.style.display = 'none';
+
         });
 
         tabs.forEach(item => {
@@ -18,7 +18,7 @@ function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass
 
     function showTabContent(i = 0) {
         tabsContent[i].style.display = 'block';
-        tabs[i].classList.add('tabheader__item_active');
+        tabs[i].classList.add(activeClass);
     }
 
     hideTabContent();
@@ -40,4 +40,4 @@ function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass
 }
 
 
-export default tabs;
+export default tabs;  

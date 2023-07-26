@@ -1,3 +1,4 @@
+import "core-js/stable";
 import tabs from './modules/tabs';
 import modal from './modules/modal';
 import timer from './modules/timer';
@@ -26,6 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
     calc();
     cards();
     forms('form', modalTimerId);
+
 
 
 
